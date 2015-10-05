@@ -8,8 +8,10 @@ var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
 var gulpif = require('gulp-if');
 var eslint = require('gulp-eslint');
+var debug = require('gulp-debug');
+var browserSync = require('browser-sync').create();
 
-gulp.task('default', ['sass', 'lint', 'connect', 'watch']);
+gulp.task('default', ['sass', 'lint', 'bower', 'browser-sync']);
 gulp.task('dist', ['sass', 'lint', 'html']);
 
 gulp.task('sass', function () {
@@ -18,17 +20,22 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./styles'));
 })
 
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        }
+    });
+    gulp.watch("**/*.scss", ['sass'], browserSync.reload);
+    gulp.watch("*.html").on('change', browserSync.reload);
+});
+
 gulp.task('lint', function () {
-    return gulp.src(['js/**/*.js'])
-        // eslint() attaches the lint output to the eslint property
-        // of the file object so it can be used by other modules.
+    return gulp.src(['scripts/*.js'])
+        .pipe(debug())
         .pipe(eslint())
-        // eslint.format() outputs the lint results to the console.
-        // Alternatively use eslint.formatEach() (see Docs).
         .pipe(eslint.format())
-        // To have the process exit with an error code (1) on
-        // lint error, return the stream and pipe to failAfterError last.
-        .pipe(eslint.failAfterError());
+        .pipe(eslint.failOnError());
 });
 
 gulp.task('html', function () {

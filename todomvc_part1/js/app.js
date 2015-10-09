@@ -9,38 +9,9 @@ jQuery(function ($) {
 	var ENTER_KEY = 13;
 	var ESCAPE_KEY = 27;
 
-	var util = {
-		uuid: function () {
-			/*jshint bitwise:false */
-			var i, random;
-			var uuid = '';
-
-			for (i = 0; i < 32; i++) {
-				random = Math.random() * 16 | 0;
-				if (i === 8 || i === 12 || i === 16 || i === 20) {
-					uuid += '-';
-				}
-				uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
-			}
-
-			return uuid;
-		},
-		pluralize: function (count, word) {
-			return count === 1 ? word : word + 's';
-		},
-		store: function (namespace, data) {
-			if (arguments.length > 1) {
-				return localStorage.setItem(namespace, JSON.stringify(data));
-			} else {
-				var store = localStorage.getItem(namespace);
-				return (store && JSON.parse(store)) || [];
-			}
-		}
-	};
-
 	var App = {
 		init: function () {
-			this.todos = util.store('todos-jquery');
+			//this.todos = util.store('todos-jquery');
 			this.cacheElements();
 			this.bindEvents();
 
@@ -76,17 +47,18 @@ jQuery(function ($) {
 			list.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
-			var todos = this.getFilteredTodos();
+			//var todos = this.getFilteredTodos();
+            var todos = todoRepo.getList(this.filter);
 			this.$todoList.html(this.todoTemplate(todos));
 			this.$main.toggle(todos.length > 0);
-			this.$toggleAll.prop('checked', this.getActiveTodos().length === 0);
+			this.$toggleAll.prop('checked', todoRepo.getList('active').length === 0);
 			this.renderFooter();
 			this.$newTodo.focus();
-			util.store('todos-jquery', this.todos);
+			todoRepo.store();
 		},
 		renderFooter: function () {
-			var todoCount = this.todos.length;
-			var activeTodoCount = this.getActiveTodos().length;
+			var todoCount = todoRepo.getList().length;
+			var activeTodoCount = todoRepo.getList('active').length;
 			var template = this.footerTemplate({
 				activeTodoCount: activeTodoCount,
 				activeTodoWord: util.pluralize(activeTodoCount, 'item'),
@@ -99,35 +71,40 @@ jQuery(function ($) {
 		toggleAll: function (e) {
 			var isChecked = $(e.target).prop('checked');
 
-			this.todos.forEach(function (todo) {
-				todo.completed = isChecked;
-			});
+            todoRepo.toggleAll(isChecked);
+
+			//this.todos.forEach(function (todo) {
+			//	todo.completed = isChecked;
+			//});
 
 			this.render();
 		},
-		getActiveTodos: function () {
-			return this.todos.filter(function (todo) {
-				return !todo.completed;
-			});
-		},
-		getCompletedTodos: function () {
-			return this.todos.filter(function (todo) {
-				return todo.completed;
-			});
-		},
+		//getActiveTodos: function () {
+		//	return this.todos.filter(function (todo) {
+		//		return !todo.completed;
+		//	});
+		//},
+		//getCompletedTodos: function () {
+		//	return this.todos.filter(function (todo) {
+		//		return todo.completed;
+		//	});
+		//},
 		getFilteredTodos: function () {
-			if (this.filter === 'active') {
-				return this.getActiveTodos();
-			}
-
-			if (this.filter === 'completed') {
-				return this.getCompletedTodos();
-			}
-
-			return this.todos;
+			//
+			// if (this.filter === 'active') {
+            //	return this.getActiveTodos();
+            //}
+            //
+            //if (this.filter === 'completed') {
+            //	return this.getCompletedTodos();
+            //}
+            //
+            //return this.todos;
+            return todoRepo.getList(this.filter);
 		},
 		destroyCompleted: function () {
-			this.todos = this.getActiveTodos();
+			//this.todos = this.getActiveTodos();
+            todoRepo.removeCompleted();
 			this.filter = 'all';
 			this.render();
 		},
@@ -135,7 +112,7 @@ jQuery(function ($) {
 		// returns the corresponding index in the `todos` array
 		indexFromEl: function (el) {
 			var id = $(el).closest('li').data('id');
-			var todos = this.todos;
+			var todos = todoRepo.getList();
 			var i = todos.length;
 
 			while (i--) {
@@ -152,11 +129,13 @@ jQuery(function ($) {
 				return;
 			}
 
-			this.todos.push({
-				id: util.uuid(),
-				title: val,
-				completed: false
-			});
+			//this.todos.push({
+			//	id: util.uuid(),
+			//	title: val,
+			//	completed: false
+			//});
+
+            todoRepo.add(val);
 
 			$input.val('');
 
@@ -164,7 +143,7 @@ jQuery(function ($) {
 		},
 		toggle: function (e) {
 			var i = this.indexFromEl(e.target);
-			this.todos[i].completed = !this.todos[i].completed;
+			todoRepo.get(i).completed = !todoRepo.get(i).completed;
 			this.render();
 		},
 		edit: function (e) {
@@ -194,15 +173,18 @@ jQuery(function ($) {
 			var i = this.indexFromEl(el);
 
 			if (val) {
-				this.todos[i].title = val;
+				//this.todos[i].title = val;
+                todoRepo.get(i).title = val;
 			} else {
-				this.todos.splice(i, 1);
+				//this.todos.splice(i, 1);
+                todoRepo.getList().splice(i, 1);
 			}
 
 			this.render();
 		},
 		destroy: function (e) {
-			this.todos.splice(this.indexFromEl(e.target), 1);
+			//this.todos.splice(this.indexFromEl(e.target), 1);
+			todoRepo.remove(this.indexFromEl(e.target));
 			this.render();
 		}
 	};

@@ -1,3 +1,8 @@
+$body_color: #4D4D4D;
+$body_background_color: #f5f5f5;
+//$body_background_color: red;
+$input_color: #e6e6e6;
+
 html,
 body {
 	margin: 0;
@@ -24,8 +29,8 @@ button {
 body {
 	font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	line-height: 1.4em;
-	background: #f5f5f5;
-	color: #4d4d4d;
+	background: $body_background_color;
+	color: $body_color;
 	min-width: 230px;
 	max-width: 550px;
 	margin: 0 auto;
@@ -55,19 +60,19 @@ input[type="checkbox"] {
 #todoapp input::-webkit-input-placeholder {
 	font-style: italic;
 	font-weight: 300;
-	color: #e6e6e6;
+	color: $input_color;
 }
 
 #todoapp input::-moz-placeholder {
 	font-style: italic;
 	font-weight: 300;
-	color: #e6e6e6;
+	color: $input_color;
 }
 
 #todoapp input::input-placeholder {
 	font-style: italic;
 	font-weight: 300;
-	color: #e6e6e6;
+	color: $input_color;
 }
 
 #todoapp h1 {

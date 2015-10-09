@@ -12,6 +12,7 @@ jQuery(function ($) {
 	var App = {
 		init: function () {
 			//this.todos = util.store('todos-jquery');
+            todoRepo.init();
 			this.cacheElements();
 			this.bindEvents();
 
@@ -69,9 +70,9 @@ jQuery(function ($) {
 			this.$footer.toggle(todoCount > 0).html(template);
 		},
 		toggleAll: function (e) {
-			var isChecked = $(e.target).prop('checked');
+			//var isChecked = $(e.target).prop('checked');
 
-            todoRepo.toggleAll(isChecked);
+            todoRepo.toggleAll();
 
 			//this.todos.forEach(function (todo) {
 			//	todo.completed = isChecked;

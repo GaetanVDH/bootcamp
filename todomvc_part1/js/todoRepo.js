@@ -7,7 +7,7 @@ var todoRepo = (function(){
     var todos = [];
     const storeKey = 'todos-jquery';
 
-    function _init(){
+    function init(){
         todos = util.store(storeKey);
     }
 
@@ -23,8 +23,8 @@ var todoRepo = (function(){
         todos.splice(index, 1);
     }
 
-    function get(id){
-        return todos[id];
+    function get(index){
+        return todos[index];
     }
 
     function getList(filter){
@@ -50,10 +50,16 @@ var todoRepo = (function(){
             return todo.completed;
         });
     }
+    //
+    //function toggleAll(isChecked){
+    //    todos.forEach(function (todo) {
+    //        todo.completed = isChecked;
+    //    });
+    //}
 
-    function toggleAll(isChecked){
+    function toggleAll(){
         todos.forEach(function (todo) {
-            todo.completed = isChecked;
+            todo.completed = !todo.completed;
         });
     }
 
@@ -65,10 +71,9 @@ var todoRepo = (function(){
         util.store(storeKey, todos);
     }
 
-    _init();
-
     return{
         //todos: todos,
+        init: init,
         store: store,
         add: add,
         get: get,

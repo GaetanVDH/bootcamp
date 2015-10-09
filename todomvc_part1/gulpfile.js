@@ -2,8 +2,10 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var wiredep = require('wiredep').stream;
+var Server = require('karma').Server;
 
-gulp.task('default', ['sass', 'bower', 'browser-sync']);
+
+gulp.task('default', ['sass', 'bower', 'tdd', 'browser-sync']);
 
 gulp.task('browser-sync', function() {
     browserSync.init({
@@ -20,6 +22,19 @@ gulp.task('sass', function () {
     return gulp.src('./css/*.scss')
         .pipe(sass())
         .pipe(gulp.dest('./styles'));
+});
+
+gulp.task('test', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task('tdd', function (done) {
+    new Server({
+        configFile: __dirname + '/karma.conf.js'
+    }, done).start();
 });
 
 gulp.task('bower', function(){

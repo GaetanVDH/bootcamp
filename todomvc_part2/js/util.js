@@ -33,4 +33,4 @@ class Util {
     }
 }
 
-var util = new Util();
+module.exports = new Util();

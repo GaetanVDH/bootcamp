@@ -9,10 +9,13 @@ jQuery(function ($) {
 	var ENTER_KEY = 13;
 	var ESCAPE_KEY = 27;
 
+	var Todo = require('./todoRepo.js');
+    var util = require('./util.js');
+
 	var App = {
 		init: function () {
 			//this.todos = util.store('todos-jquery');
-            this.todoRepo = new Todo();
+            this.todoRepo = Todo;
 			this.cacheElements();
 			this.bindEvents();
 

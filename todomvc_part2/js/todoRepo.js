@@ -2,8 +2,7 @@
  * Created by Gaetan on 09/10/15.
  */
 
-var Todo = (function() {
-    'use strict';
+var util = require('./util.js');
 
     class Todo {
 
@@ -87,5 +86,5 @@ var Todo = (function() {
         //}
 
     }
-    return Todo;
-})();
+
+module.exports = new Todo();

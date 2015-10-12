@@ -25,10 +25,16 @@ app.get('/api/todos', function(req, res, next){
 
 app.get('/api/todos/:id', function(req, res, next){
     var todo = _.find(todos, todo => todo.id == req.params.id);
+    if(todo === undefined){
+        return res.status(404).send('Resource not found!');
+    }
     res.send(todo);
 });
 
 app.post('/api/todos/', function(req, res, next){
+    if(!req.body.title || !req.body.completed){
+        return res.status(400).send("Bad request");
+    }
     var maxId = -1;
     var todo = _.max(todos, todo => todo.id);
     if(todo){
@@ -46,6 +52,9 @@ app.post('/api/todos/', function(req, res, next){
 
 app.put('/api/todos/:id/', function(req, res, next){
     var todo = _.find(todos, todo => todo.id == req.params.id);
+    if(todo === undefined){
+        return res.status(404).send('Resource not found!');
+    }
     todo.title = req.body.title;
     todo.completed = req.body.completed;
     res.send(todo);
@@ -53,6 +62,9 @@ app.put('/api/todos/:id/', function(req, res, next){
 
 app.delete('/api/todos/:id', function(req, res, next){
     var todo = _.find(todos, todo => todo.id == req.params.id);
+    if(todo === undefined){
+        return res.status(404).send('Resource not found!');
+    }
     todos = _.without(todos, todo);
     res.send(todo);
 });

@@ -1,10 +1,12 @@
 var express = require('express');
 var morgan = require('morgan');
-var path = require('path');
 var bodyParser = require('body-parser');
-var todoApi = require('./todos');
+var userApi = require('./routes/users');
 var cors = require('cors');
+var mongoose = require('mongoose');
 var cfg = require('./config');
+var User = require('./models/user');
+var dataGenerator = require('./config/dataGenerator');
 
 var app = express();
 
@@ -17,7 +19,16 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-app.use('/api/todos', todoApi);
+//setup db
+mongoose.connect('mongodb://localhost/demo');
+app.use('/api/users', userApi);
+
+//fill db
+if(User.findOne({}, function(err, user){
+    if(!user){
+        dataGenerator.fillDb();
+    }
+}));
 
 var port = cfg.port;
 

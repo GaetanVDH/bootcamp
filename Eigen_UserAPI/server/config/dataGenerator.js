@@ -8,7 +8,7 @@ module.exports = {
             data.push({
                 firstName: faker.name.firstName(),
                 lastName: faker.name.lastName(),
-                age: faker.random.number(100),
+                age: Math.round(Math.random() * (70 - 18) + 18),
                 email: faker.internet.email,
                 homeAddress: {
                     addressLine: faker.address.streetAddress(),

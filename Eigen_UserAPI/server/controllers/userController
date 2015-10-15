@@ -1,0 +1,103 @@
+var _ = require('underscore');
+var User = require('../models/user');
+var userMapper = require('../mappers/userMapper');
+var Q = require('q');
+var repository = require('../data/userRepository');
+
+module.exports = {
+    findAll: function findAll(req, res, next){
+        if(!req.query.pageSize || !req.query.page){
+            req.query.pageSize = 100;
+            req.query.page = 0;
+        }
+        var returnUsers = [];
+        repository.findAll(req.query.pageSize, req.query.page, req.query.sort)
+            .then(function(users){
+                _.each(users, function(user){
+                    returnUsers.push(userMapper.map(user));
+                });
+                return res.status(200).send(returnUsers);
+            })
+            .catch(function(){
+                return next(error(err));
+            });
+    },
+    findOne: function(req, res, next){
+
+        repository.findOne({ _id: req.params.id})
+            .then(function(user){
+                if(!user)
+                    return next(error(404));
+                var returnUser = userMapper.map(user);
+                return res.status(200).send(returnUser);
+            })
+            .catch(function(){
+                return next(error(err));
+            });
+    },
+    update: function(req, res, next){
+        console.log('entering...');
+        repository.findOne({ _id: req.params.id})
+            .then(function(user){
+                if(!user) return next(error(404));
+                var names = req.body.name.split(" ");
+                user.firstName = names[0];
+                user.lastName = names[1];
+                user.age = req.body.age;
+                user.email = req.body.email;
+                user.homeAddress.addressLine = req.body.address;
+                user.homeAddress.city = req.body.city;
+                user.homeAddress.zip = req.body.zip;
+                return repository.save(user);
+            })
+            .then(function(user){
+                // called after save is finished
+                res.status(200).send(userMapper.map(user));
+            })
+            .catch(function(err){
+                next(err);
+            });
+    },
+    create: function(req, res, next){
+        var names = req.body.name.split(" ");
+        var user = new User({
+            firstName: names[0],
+            lastName: names[1],
+            age: req.body.age,
+            email: req.body.email,
+            homeAddress: {
+                addressLine: req.body.address,
+                city: req.body.city,
+                zip: req.body.zip
+            }
+        });
+        repository.save(user)
+            .then(function(user){
+                res.set('location', `http://localhost:3000/api/users/${user._id}`);
+                res.status(201).send(userMapper.map(user));
+            })
+            .catch(function (err) {
+                next(err);
+            });
+    },
+    remove: function(req, res, next){
+
+        repository.findOne({ _id: req.params.id })
+            .then(function(user){
+                return res.status(200).send(userMapper.map(user));
+            })
+            .catch(function(err){
+                next(err);
+            });
+    }
+};
+
+
+function error(status, message){
+    var error = new Error();
+    if(message){
+        error.details = message;
+    }
+    error.status = status;
+    return error;
+}

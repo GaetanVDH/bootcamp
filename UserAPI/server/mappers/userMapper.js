@@ -1,15 +1,13 @@
-var User = require('../models/user');
-
 module.exports = {
-    map: function map(userModel){
+    map: function map(user){
         var userResource = {
-            id: userModel._id,
-            name: `${userModel.firstName} ${userModel.lastName}`,
-            age: userModel.age,
-            email: userModel.email,
-            address: userModel.homeAddress.addressLine,
-            city: userModel.homeAddress.city,
-            zip: userModel.homeAddress.zip
+            id: user._id,
+            name: `${user.firstName} ${user.lastName}`,
+            age: user.age,
+            email: user.email,
+            address: user.homeAddress.addressLine,
+            city: user.homeAddress.city,
+            zip: user.homeAddress.zip
         }
         return userResource;
     }

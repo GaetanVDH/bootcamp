@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of users</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+        .myStyle{
+            background-color: red;
+            font-size: x-large;
+        }
+        .sortorder:after {
+            content: '\25b2';
+        }
+        .sortorder.reverse:after {
+            content: '\25bc';
+        }
+    </style>
+</head>
+<body ng-app="userApp">
+    <div ng-controller="UserController as vm" ng-cloak>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    <a href="" ng-click="vm.order('name')">Name</a>
+                    <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse:vm.reverse}"></span>
+                </th>
+                <th>
+                    <a href="" ng-click="vm.order('email')">Email</a>
+                    <span class="sortorder" ng-show="vm.predicate === 'email'" ng-class="{reverse:vm.reverse}"></span>
+                </th>
+                <th>
+                    <a href="" ng-click="vm.order('address')">Address</a>
+                    <span class="sortorder" ng-show="vm.predicate === 'address'" ng-class="{reverse:vm.reverse}"></span>
+                </th>
+                <th>
+                    <a href="" ng-click="vm.order('zip')">Zip</a>
+                    <span class="sortorder" ng-show="vm.predicate === 'zip'" ng-class="{reverse:vm.reverse}"></span>
+                </th>
+                <th>
+                    <a href="" ng-click="vm.order('city')">City</a>
+                    <span class="sortorder" ng-show="vm.predicate === 'city'" ng-class="{reverse:vm.reverse}"></span>
+                </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="user in vm.users | orderBy:vm.predicate:vm.reverse">
+                <tr>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.address}}</td>
+                    <td>{{user.zip}}</td>
+                    <td>{{user.city}}</td>
+                    <td><button ng-click="vm.deleteUser(user.id)">Delete?</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/UserController.js"></script>
+    <script src="js/userService.js"></script>
+</body>
+</html>

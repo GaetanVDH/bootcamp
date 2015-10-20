@@ -1,0 +1,73 @@
+var _ = require('underscore');
+var HttpError = require('../httpError');
+var UserModel = require('../models/user');
+var randomString = require('random-string');
+var sha256 = require('sha256');
+
+module.exports = {
+    findAll: function(req, res, next){
+        UserModel.findOneQ({ _id: req.params.id})
+            .then(function(user){
+                if (!user)
+                    next(new HttpError(404));
+                var result = _.map(user.apiKeys, function(key){
+                    return {name:key.name};
+                });
+                res.status(200).send(result);
+            })
+            .catch(function(err){
+                next(err);
+            })
+    },
+    create: function (req, res, next) {
+        var resource;
+        var randStr;
+        UserModel.findOneQ({ _id: req.params.id})
+            .then(function (user) {
+                if (!user)
+                    next(new HttpError(404));
+                resource = req.body;
+                randStr = randomString({length: 35});
+                user.apiKeys.push({
+                    name: resource.name,
+                    encryptedKey: sha256(randStr)
+                });
+                return user.saveQ();
+            })
+            .then(function (updatedUser) {
+                res.status(200).send({
+                    name: resource.name,
+                    key: randStr
+                });
+            })
+            .catch(function (err) {
+                next(err);
+            })
+    },
+    delete: function (req, res, next) {
+        var key ;
+        UserModel.findOneQ({_id: req.params.id})
+            .then(function (user) {
+                if (!user) next(new HttpError(404));
+
+                key = _.findWhere(user.apiKeys, {name: req.params.name});
+                if (!key) next(new HttpError(204));
+
+                user.apiKeys = _.without(
+                    user.apiKeys,
+                    key
+                );
+
+                return UserModel.saveQ(user);
+            })
+            .then(function (user) {
+                res.status(200).send({
+                    name : key.name
+                });
+            })
+            .catch(function (err) {
+                next(err);
+            });
+    }
+
+};

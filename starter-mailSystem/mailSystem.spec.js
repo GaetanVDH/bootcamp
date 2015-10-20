@@ -1,43 +1,55 @@
 var chai = require('chai');
 var sinon = require('sinon');
-var expect = chai.expect;
+chai.use(require('chai-as-promised'));
 chai.use(require('sinon-chai'));
-var mailSystem = require('./mailSystem');
+var expect = chai.expect;
+
+// subject under test
+var sut = require('./mailSystem');
+
+// dependencies
 var smtpTransport = require('./smtpTransport');
 
-describe('module', function() {
+describe('mailSystem', function() {
 
-    var sandbox;
-
+    var fromAddress, toAddress, model, sandbox, sandbox;
     beforeEach(function() {
+        // create sandbox for spies and stubs
         sandbox = sinon.sandbox.create();
+
+        // test objects to re-use for later
+        fromAddress = 'noreply@euri.com';
+        toAddress = 'peter.cosemans@euri.com';
+        subject = "Welcome to...";
+        model = {
+            name: 'peter'
+        };
     });
 
-    afterEach(function () {
+    afterEach(function() {
+        // make sure all spies and stubs are removed at the end
         sandbox.restore();
     });
 
-    it('send should have been called', function() {
+    it('should send correct mail with smtp', function() {
+        // arrange
         var stub = sandbox.stub(smtpTransport, 'send');
-        mailSystem.sendWelcomeMail('peter.cosemans@gmail.com', 'Welcome to...', { name: 'peter'});
-        expect(stub).to.have.been.called;
-    });
 
-    it('args should be set for send', function () {
-        var spy = sandbox.stub(smtpTransport, 'send');
-        mailSystem.sendWelcomeMail('peter.cosemans@gmail.com', 'Welcome to...', { name: 'peter'});
-        var mail = spy.args[0][0];
-        expect(mail).to.exist;
-        expect(mail.toAddress).to.equal('peter.cosemans@gmail.com');
-        expect(mail.fromAddress).to.be.a('string');
-        expect(mail.subject).to.equal('Welcome to...');
-        expect(mail.body).to.be.equal('Hello peter, this mail is concerning...');
-    });
+        // act
+        sut.sendWelcomeMail(toAddress, subject, model);
 
-    it('should throw error when to is undefined', function(){
-        var fn = mailSystem.sendWelcomeMail;
-        fn(undefined, 'Welcome to...', { name: 'peter'});;
-        expect(fn).to.throw(Error);
-    })
+        // assert
+        expect(stub).to.have.been.calledWith({
+            toAddress: toAddress,
+            body: `Hello ${model.name}, this mail is concerning...`,
+        fromAddress: 'noreply@euri.com',
+            subject: subject
+    });
 });
 
+    it('should send correct mail with smtp', function() {
+        // arrange
+        var stub = sandbox.stub(smtpTransport, 'send');
+
+    });
+});

@@ -1,0 +1,23 @@
+{
+  "name": "angular1",
+  "version": "0.0.0",
+  "authors": [
+    "Gaetan Vanderhaegen <gaetan.vanderhaegen@euri.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.7"
+  }
+}

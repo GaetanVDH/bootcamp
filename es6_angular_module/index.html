@@ -1,10 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html ng-app="vitarum" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Angular App</title>
+    <base href="/">
 </head>
 <body>
+<div ng-controller="MainController as ctrl">
+    <ui-view></ui-view>
+    <vi-button click="ctrl.logSomething()"></vi-button>
+</div>
 <script src="dist/bundle.js"></script>
 </body>
 </html>

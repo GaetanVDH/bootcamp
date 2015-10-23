@@ -11,7 +11,11 @@
     "bootstrap": "^3.3.5",
     "webpack": "^1.12.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^4.1.3",
+    "eslint": "^1.7.3",
+    "eslint-config-airbnb": "^0.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

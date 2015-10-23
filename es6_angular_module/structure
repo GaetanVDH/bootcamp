@@ -1,0 +1,29 @@
+app
+
+    common/
+        index.js
+        models
+            index.js
+            resume.model.js                 --> resumeModel
+        services
+            index.js
+            security.service.js             --> securityService
+        directives  
+            index.js
+            button.directive.js             --> vi-button: buttonDirective + ButtonDirectiveController
+            button.directive.tpl.html
+    components
+        index.js
+        resumeList
+        resume
+            index.js
+            resume.html
+            resume.controller.js            --> ResumeController.js
+            resumeDetail.controller.js
+            index.js
+        profile
+        login
+    layout
+        header.html
+        header.controller.js
+        footer.controller.js

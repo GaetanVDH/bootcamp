@@ -1,0 +1,9 @@
+{
+    "root": true,
+    "extends": "airbnb/base",
+    "rules": {
+        "indent": [2, 4],
+        "strict": [0, "function"],
+        "func-names": [0]
+    }
+}

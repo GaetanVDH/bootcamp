@@ -60,8 +60,16 @@
 
 	var _appConfig2 = _interopRequireDefault(_appConfig);
 
-	console.log(_angularUiRouter2['default']);
-	_angular2['default'].module('vitarum', [_angularUiRouter2['default']]).config(_appConfig2['default']);
+	var _mainControllerJs = __webpack_require__(5);
+
+	var _mainControllerJs2 = _interopRequireDefault(_mainControllerJs);
+
+	var _common = __webpack_require__(6);
+
+	var _common2 = _interopRequireDefault(_common);
+
+	console.log(_mainControllerJs2['default']);
+	_angular2['default'].module('vitarum', [_angularUiRouter2['default'], _common2['default']]).controller('MainController', _mainControllerJs2['default']).config(_appConfig2['default']);
 
 /***/ },
 /* 1 */
@@ -33365,13 +33373,217 @@
 	    value: true
 	});
 	exports['default'] = routing;
-	routing.$inject = ['$urlRouterProvider', '$locationProvider'];
 
-	function routing($urlRouterProvider, $locationProvider) {
-	    $locationProvider.html5Mode(true);
+	function routing($urlRouterProvider, $locationProvider, $stateProvider) {
+	    // $locationProvider.html5Mode(true);
+	    $stateProvider.state('home', {
+	        url: '/',
+	        templateUrl: './view.html',
+	        controller: 'MainController',
+	        controllerAs: 'vm'
+	    });
 	    $urlRouterProvider.otherwise('/');
 	}
 
+	routing.$inject = ['$urlRouterProvider', '$locationProvider', '$stateProvider'];
+	module.exports = exports['default'];
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var MainController = (function () {
+	    function MainController(securityService, $log) {
+	        _classCallCheck(this, MainController);
+
+	        this.message = securityService.getName();
+	        this.$log = $log;
+	    }
+
+	    _createClass(MainController, [{
+	        key: 'logSomething',
+	        value: function logSomething() {
+	            this.$log.info('Logging something...');
+	        }
+	    }]);
+
+	    return MainController;
+	})();
+
+	exports['default'] = MainController;
+
+	MainController.$inject = ['securityService', '$log'];
+	module.exports = exports['default'];
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global angular */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _directives = __webpack_require__(7);
+
+	var _directives2 = _interopRequireDefault(_directives);
+
+	var _services = __webpack_require__(9);
+
+	var _services2 = _interopRequireDefault(_services);
+
+	exports['default'] = angular.module('common', [_directives2['default'], _services2['default']]).name;
+	module.exports = exports['default'];
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global angular */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _buttonDirectiveJs = __webpack_require__(8);
+
+	exports['default'] = angular.module('directives', []).directive('viButton', _buttonDirectiveJs.buttonDirective).controller('ButtonDirectiveController', _buttonDirectiveJs.ButtonDirectiveController).name;
+	module.exports = exports['default'];
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	// <vi-button type="aa"
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var buttonDirective = function buttonDirective() {
+	    return {
+	        restrict: 'EA',
+	        templateUrl: 'app/common/directives/button.directive.tpl.html',
+	        scope: {
+	            title: '@',
+	            click: '&'
+	        },
+	        controller: 'ButtonDirectiveController',
+	        controllerAs: 'ctrl'
+	    };
+	};
+
+	exports.buttonDirective = buttonDirective;
+	//export const ButtonDirectiveController = function ButtonDirectiveController($scope, $element, $attrs, $log) {
+	//    const vm = this;
+	//    vm.name = 'test';
+	//    activate();
+	//
+	//    ///////
+	//
+	//    function activate() {
+	//        $log.info($element);
+	//        $log.info($attrs);
+	//        $log.info($attrs.myAttr);
+	//    }
+	//};
+
+	var ButtonDirectiveController = (function () {
+	    function ButtonDirectiveController($scope) {
+	        _classCallCheck(this, ButtonDirectiveController);
+
+	        this.click = $scope.click;
+	        this.title = $scope.title;
+	        console.log('ctrl');
+	    }
+
+	    _createClass(ButtonDirectiveController, [{
+	        key: 'doClick',
+	        value: function doClick() {
+	            console.log('click');
+	            this.click();
+	        }
+	    }]);
+
+	    return ButtonDirectiveController;
+	})();
+
+	exports.ButtonDirectiveController = ButtonDirectiveController;
+	ButtonDirectiveController.$inject = ['$scope', '$element', '$attrs', '$log'];
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global angular */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _securityServiceJs = __webpack_require__(10);
+
+	var _securityServiceJs2 = _interopRequireDefault(_securityServiceJs);
+
+	exports['default'] = angular.module('services', []).service('securityService', _securityServiceJs2['default']).name;
+	module.exports = exports['default'];
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var securityService = (function () {
+	    function securityService() {
+	        _classCallCheck(this, securityService);
+
+	        this.name = 'securityService';
+	    }
+
+	    _createClass(securityService, [{
+	        key: 'getName',
+	        value: function getName() {
+	            return this.name;
+	        }
+	    }]);
+
+	    return securityService;
+	})();
+
+	exports['default'] = securityService;
 	module.exports = exports['default'];
 
 /***/ }

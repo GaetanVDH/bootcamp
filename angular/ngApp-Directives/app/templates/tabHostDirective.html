@@ -1,0 +1,6 @@
+<ul>
+    <li ng-repeat="tab in vm.tabList">
+        <a href="" ng-click="vm.activateTab(tab)">{{tab.getTitle()}}</a>
+    </li>
+</ul>
+<div ng-transclude></div>

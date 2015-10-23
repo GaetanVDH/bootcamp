@@ -2,6 +2,8 @@
     'use strict';
 
     angular
-        .module('userApp', [])
+        .module('userApp', [
+            'controllers'
+        ])
         .factory('_', $window);
 })(angular);

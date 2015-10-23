@@ -1,0 +1,7 @@
+<toaster-container></toaster-container>
+    <span>{{vm.counter}}</span><br>
+    <div ng-if="vm.showAlert">
+        <uib-alert type="{{vm.alert.type}}" close="vm.hideAlert()">{{vm.alert.msg}}</uib-alert>
+    </div>
+    <button type="button" class='btn btn-default' ng-click="vm.toggleAlert()">Show Alert</button>
+</div>

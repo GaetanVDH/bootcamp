@@ -1,0 +1,33 @@
+{
+  "name": "userAPI",
+  "version": "0.0.0",
+  "homepage": "https://github.com/RobbertWolfs/Bootcamp",
+  "authors": [
+    "Robbert Wolfs <robbertwolfs@gmail.com>",
+    "Peter Cosemans <peter.cosemans@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "app/bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "underscore": "~1.8.3",
+    "angular-bootstrap": "~0.14.2",
+    "angular-resource": "~1.4.7",
+    "AngularJS-Toaster": "angularjs-toaster#~0.4.15",
+    "angular-sanitize": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "angular-ui-router": "~0.2.15",
+    "angular-messages": "~1.4.7"
+  }
+}

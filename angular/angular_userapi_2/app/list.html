@@ -1,0 +1,35 @@
+
+    <h1>User List</h1>
+    <table class="table table-striped" style="width:100%">
+        <tr>
+            <th>
+                <a ng-click="vm.sortTableBy('name')">
+                    Name
+                        <span class="sortorder"
+                              ng-show="vm.sortBy === 'name'"
+                              ng-class="{reverse:vm.reverse}">
+                        </span>
+                </a>
+            </th>
+            <th><a href="" ng-click="vm.sortTableBy('email')">Email <span class="sortorder" ng-show="vm.sortBy === 'email'" ng-class="{reverse:vm.reverse}"></span></a></th>
+            <th><a href="" ng-click="vm.sortTableBy('address')">Address <span class="sortorder" ng-show="vm.sortBy === 'address'" ng-class="{reverse:vm.reverse}"></span></a></th>
+            <th><a href="" ng-click="vm.sortTableBy('zip')">Zip <span class="sortorder" ng-show="vm.sortBy === 'zip'" ng-class="{reverse:vm.reverse}"></span></a></th>
+            <th><a href="" ng-click="vm.sortTableBy('city')">City <span class="sortorder" ng-show="vm.sortBy === 'city'" ng-class="{reverse:vm.reverse}"></span></a></th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="user in vm.users | orderBy:vm.sortBy:vm.reverse">
+            <td><a ui-sref="edit({userId:user.id})">{{ user.name }}</a></td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.zip }}</td>
+            <td>{{ user.city }}</td>
+            <td>
+                <button type="button" class="btn btn-danger"
+                        ng-click="vm.deleteUser(user)">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div class="alert alert-warning" ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+</div>

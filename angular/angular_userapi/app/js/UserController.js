@@ -1,8 +1,12 @@
 (function () {
     'use strict';
 
+    //angular
+    //    .module('userApp')
+    //    .controller('UserController', UserController);
+
     angular
-        .module('userApp')
+        .module('controllers', [])
         .controller('UserController', UserController);
 
     function UserController(userService){

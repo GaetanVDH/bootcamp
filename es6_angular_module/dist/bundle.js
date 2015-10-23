@@ -60,7 +60,8 @@
 
 	var _appConfig2 = _interopRequireDefault(_appConfig);
 
-	_angular2['default'].module('app', [_angularUiRouter2['default']]).config(_appConfig2['default']);
+	console.log(_angularUiRouter2['default']);
+	_angular2['default'].module('vitarum', [_angularUiRouter2['default']]).config(_appConfig2['default']);
 
 /***/ },
 /* 1 */
